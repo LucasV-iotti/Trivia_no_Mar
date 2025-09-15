@@ -1,0 +1,118 @@
+/* ===============================
+   Gato Pirata — v8.7.1 (estilos + navio animado)
+================================ */
+:root{
+  --sea-top:#0d4267;--sea-mid:#0a3b5f;--sea-bot:#083351;--wave1:#146a8f;--wave2:#0f5e83;--wave3:#0a5478;--ink:#f6fbff;--muted:#d7ecf8;--chip:#0d3550;--chip-2:#124564;--outline:#1a5a81;--seafoam:#2dd4bf;--coral:#ff7a59;--panel:#0a263b;--panel-2:#0d2f48;--wood1:#7e4f28;--wood2:#5a3316;--woodrim1:#9a6a3e;--woodrim2:#7a4a21;--brass:#cfa45b;--brass2:#a97533;--steel:#cfd8e3;--steel2:#9fb1be;--shadow:rgba(0,0,0,.28)
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:linear-gradient(180deg,var(--sea-top) 0%,var(--sea-mid) 45%,var(--sea-bot) 100%);position:relative}
+
+.bg-waves{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-wave{position:absolute;left:-20%;right:-20%;opacity:.18;filter:blur(.2px)}
+.bg-wave.l1{bottom:10%;height:40px;background:radial-gradient(14px 6px at 14px 6px,var(--wave1) 42%,transparent 43%) repeat-x 0 0/28px 12px;animation:bgw1 16s linear infinite}
+.bg-wave.l2{bottom:22%;height:34px;background:radial-gradient(12px 6px at 12px 6px,var(--wave2) 42%,transparent 43%) repeat-x 0 0/24px 10px;animation:bgw2 12s linear infinite}
+.bg-wave.l3{bottom:34%;height:30px;background:radial-gradient(10px 5px at 10px 5px,var(--wave3) 42%,transparent 43%) repeat-x 0 0/20px 10px;animation:bgw3 10s linear infinite}
+@keyframes bgw1{to{transform:translateX(-28px)}}
+@keyframes bgw2{to{transform:translateX(-24px)}}
+@keyframes bgw3{to{transform:translateX(-20px)}}
+
+.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(5,26,41,.85),rgba(5,26,41,.55));backdrop-filter:blur(6px)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{font-size:22px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.3))}
+.brand h1{font-size:18px;margin:0}
+.hud{display:flex;align-items:center;gap:16px}
+.score{color:var(--seafoam)}
+.progress{width:180px;height:10px;background:rgba(0,0,0,.25);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#60a5fa 0%,var(--seafoam) 35%,#8df6e3 100%);box-shadow:0 0 12px rgba(45,212,191,.25) inset;transition:width .5s ease}
+.stage-indicator{color:var(--muted)}
+
+.game{position:relative;z-index:1;display:grid;grid-template-columns:1fr 360px;gap:16px;max-width:1150px;margin:18px auto;padding:0 16px}
+
+.ocean{grid-column:1/-1;position:relative;z-index:5;height:190px;margin-bottom:8px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,.06));border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden}
+.boat{position:absolute;left:14%;top:78%;width:150px;height:90px;transform:translateY(-50%);z-index:7;transform-origin:50% 70%;animation:boat-bob 4.2s ease-in-out infinite}
+@keyframes boat-bob{0%,100%{transform:translateY(calc(-50%)) rotate(0.6deg)}50%{transform:translateY(calc(-50% - 6px)) rotate(-0.6deg)}}
+.boat .wake{position:absolute;left:-10px;right:-10px;bottom:-4px;height:10px;background:radial-gradient(20px 6px at 20px 6px,rgba(255,255,255,.25) 40%,transparent 41%) repeat-x 0 0/40px 12px;opacity:.45;filter:blur(.3px);animation:wake-move 2.2s linear infinite}
+@keyframes wake-move{to{background-position-x:-40px}}
+.boat .hull{position:absolute;left:0;bottom:6px;width:150px;height:48px;border-radius:0 0 18px 18px;background:linear-gradient(180deg,var(--wood1),var(--wood2));box-shadow:0 8px 0 rgba(0,0,0,.25) inset,0 2px 8px rgba(0,0,0,.3)}
+.boat .hull-gloss{position:absolute;left:6px;bottom:36px;width:138px;height:10px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0));filter:blur(.3px)}
+.boat .rim{position:absolute;left:0;bottom:44px;width:150px;height:10px;background:linear-gradient(180deg,var(--woodrim1),var(--woodrim2));border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+.boat .deck{position:absolute;left:6px;bottom:54px;width:138px;height:8px;background:repeating-linear-gradient(90deg,#2b3b46 0 8px,#23323c 8px 16px,#314550 16px 24px);border-radius:6px;opacity:.9}
+.boat .rail{position:absolute;bottom:62px;width:62px;height:6px;border-radius:6px;background:#13222c;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+.boat .rail-left{left:6px}
+.boat .rail-right{right:6px}
+.boat .portholes{position:absolute;left:24px;bottom:20px;width:102px;height:16px;background:radial-gradient(circle at 8px 8px,#bfe1f7 0 6px,#2a4c63 7px 9px,transparent 10px) 0 0/34px 16px repeat-x}
+.boat .rudder{position:absolute;right:-8px;bottom:6px;width:10px;height:22px;background:linear-gradient(180deg,#734825,#533014);border-radius:2px 0 0 2px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.boat .anchor{position:absolute;left:-10px;bottom:8px;width:12px;height:12px;border-radius:50%;background:linear-gradient(180deg,#7b8b98,#4c5c6a)}
+.boat .chain{position:absolute;left:-6px;bottom:14px;width:70px;height:2px;background:repeating-linear-gradient(90deg,#6d7f8c 0 4px,#394750 4px 8px)}
+.boat .mast.main{position:absolute;left:74px;bottom:62px;width:5px;height:98px;background:#cdb391;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.boat .crowsnest{position:absolute;left:63px;bottom:128px;width:28px;height:10px;background:#3a2c1f;border-radius:6px 6px 2px 2px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.boat .mast.fore{position:absolute;left:36px;bottom:60px;width:4px;height:74px;background:#cdb391;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+.boat .sail{position:absolute;background:linear-gradient(180deg,#f6f7fb,#cfd8e3),repeating-linear-gradient(180deg,rgba(0,0,0,.06) 0 4px,rgba(0,0,0,0) 4px 8px);box-shadow:0 0 0 1px rgba(0,0,0,.18);transform-origin:left center;animation:sail-billow 3.2s ease-in-out infinite alternate}
+@keyframes sail-billow{from{transform:skewX(0)}to{transform:skewX(-2.5deg)}}
+.boat .sail-main{left:10px;bottom:90px;width:70px;height:52px;clip-path:polygon(0 0,100% 0,0 100%)}
+.boat .sail-top{left:74px;bottom:120px;width:58px;height:36px;clip-path:polygon(0 0,100% 0,0 100%)}
+.boat .sail-fore{left:-2px;bottom:96px;width:60px;height:42px;clip-path:polygon(0 0,100% 100%,100% 0)}
+.boat .flag{position:absolute;left:76px;bottom:160px;width:30px;height:18px;background:#111;color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;border-radius:0 2px 2px 0;overflow:hidden;animation:flag-wave 1.4s ease-in-out infinite}
+.boat .flag:after{content:"\2620\FE0F";transform:translateY(-1px)}
+@keyframes flag-wave{0%,100%{transform:skewX(0)}50%{transform:skewX(-8deg)}}
+.boat .lantern{position:absolute;right:18px;bottom:122px;width:8px;height:12px;background:linear-gradient(180deg,#2a2a2a,#111);border-radius:2px;box-shadow:0 0 6px rgba(255,225,160,.45);transform-origin:50% 0;animation:lantern-swing 2.8s ease-in-out infinite alternate}
+.boat .lantern:after{content:"";position:absolute;left:-4px;right:-4px;bottom:-2px;height:6px;background:radial-gradient(circle,rgba(255,225,160,.35) 0 4px,transparent 6px)}
+@keyframes lantern-swing{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+.boat .lifebuoy{position:absolute;left:6px;bottom:66px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff 0 4px,transparent 5px),conic-gradient(#e85d4a 0 25%,#fff 25% 50%,#e85d4a 50% 75%,#fff 75% 100%);box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.boat .rope-net{position:absolute;right:6px;bottom:66px;width:24px;height:16px;background:repeating-linear-gradient(135deg,rgba(207,164,91,.75) 0 2px,transparent 2px 6px),repeating-linear-gradient(45deg,rgba(207,164,91,.75) 0 2px,transparent 2px 6px);opacity:.6;transform-origin:right center;animation:net-sway 3.6s ease-in-out infinite alternate}
+@keyframes net-sway{from{transform:rotate(0)}to{transform:rotate(-3deg)}}
+
+.wave{position:absolute;z-index:6;left:-25%;right:-25%;height:36px;opacity:.25}
+.wave.layer1{bottom:10px;background:radial-gradient(14px 6px at 14px 6px,var(--wave1) 42%,transparent 43%) repeat-x 0 0/28px 12px;animation:wave1 14s linear infinite}
+.wave.layer2{bottom:24px;background:radial-gradient(12px 6px at 12px 6px,var(--wave2) 42%,transparent 43%) repeat-x 0 0/24px 10px;animation:wave2 11s linear infinite}
+.wave.layer3{bottom:38px;background:radial-gradient(10px 5px at 10px 5px,var(--wave3) 42%,transparent 43%) repeat-x 0 0/20px 10px;animation:wave3 9s linear infinite}
+@keyframes wave1{to{transform:translateX(-28px)}}
+@keyframes wave2{to{transform:translateX(-24px)}}
+@keyframes wave3{to{transform:translateX(-20px)}}
+
+.card{background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid rgba(255,255,255,.20);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px var(--shadow)}
+.card-header{padding:14px;border-bottom:1px solid rgba(255,255,255,.12)}
+.card-header h2{margin:0;font-size:18px}
+.card-body{padding:16px}
+.panel{background:linear-gradient(180deg,rgba(10,38,59,.9),rgba(8,28,46,.9))}
+
+.statement{line-height:1.7;font-size:16px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.14);padding:14px;border-radius:10px;color:var(--ink);text-shadow:0 1px 0 rgba(0,0,0,.2)}
+.blank{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:190px;padding:8px 12px;margin:0 4px 8px 4px;border-radius:10px;border:2px dashed rgba(255,255,255,.35);color:var(--ink);background:rgba(6,24,38,.62)}
+.blank.filled{border-style:solid;border-color:#4fb3d9;color:var(--ink);background:rgba(12,44,66,.68)}
+.blank.correct{border-color:#34d399;box-shadow:0 0 0 2px rgba(52,211,153,.18)}
+.blank.wrong{border-color:#ff8a73;box-shadow:0 0 0 2px rgba(255,138,115,.16)}
+
+.options{display:flex;flex-wrap:wrap;gap:12px;padding:12px;background:rgba(6,24,38,.62);border-radius:12px;border:1px solid rgba(255,255,255,.14)}
+.chip{user-select:none;cursor:grab;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--chip);border:1px solid rgba(255,255,255,.18);color:#f0f9ff;transition:transform .06s ease,background .2s ease,box-shadow .2s ease;box-shadow:0 3px 0 0 rgba(0,0,0,.25)}
+.chip:hover{background:var(--chip-2);box-shadow:0 4px 0 0 rgba(0,0,0,.28)}
+.chip:active{cursor:grabbing;transform:translateY(1px);box-shadow:0 2px 0 0 rgba(0,0,0,.22)}
+
+.btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);color:var(--ink);cursor:pointer;transition:filter .15s,transform .02s}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px)}
+.btn.coral{border-color:#8f3e2f;background:linear-gradient(180deg,#ff8f73,#ff7a59);color:#0c2230}
+.btn.sea{border-color:#185d6a;background:linear-gradient(180deg,#33dfcd,#1fb0a1);color:#052234}
+.btn[disabled]{opacity:.6;cursor:not-allowed}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 14px}
+
+.mascot{grid-column:2/3}
+.bubble{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px;min-height:64px;box-shadow:0 12px 24px var(--shadow);margin-bottom:10px;color:var(--ink)}
+.canvas-wrap{width:100%;display:flex;align-items:center;justify-content:center;background:rgba(6,24,38,.62);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:10px}
+#pirateCanvas{width:100%;height:auto;image-rendering:auto;background:#000}
+
+@media (prefers-reduced-motion: reduce){
+  .boat,.boat .wake,.boat .sail,.boat .flag,.boat .lantern,.boat .rope-net,.bg-wave,.wave{animation:none!important}
+}
+
+.footer{text-align:center;color:var(--muted);padding:18px;border-top:1px solid rgba(255,255,255,.12);margin-top:12px}
+
+@media (max-width:980px){
+  .game{grid-template-columns:1fr}
+  .mascot{grid-column:1/-1}
+}
+
+.mascot-img{max-width:100%;height:auto;display:block;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
+
+/* Mascot toggle note: images já estão no tamanho final -> sem reamostragem do browser */
