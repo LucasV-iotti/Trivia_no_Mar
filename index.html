@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gato Marinheiro — Ligações do Mar v8.9.5</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">⚓</span>
+      <h1 class="title">Gato Marinheiro — Ligações do Mar <small>v8.9.5</small></h1>
+    </div>
+    <div class="status">
+      <div class="score">Pontos: <span id="score">0</span></div>
+      <div class="screen-indicator">Tela <span id="screenIndex">1</span>/<span id="screenTotal">2</span></div>
+      <div class="timer" aria-live="polite"><span id="timer">0s</span></div>
+    </div>
+  </header>
+
+  <!-- Faixa animada de mar e NAVIO -->
+  <section class="sea-banner" aria-hidden="true">
+    <div class="boat-track">
+      <div class="boat" role="img" aria-label="Navio navegando">
+        <!-- NAVIO em SVG -->
+        <svg viewBox="0 0 220 120" width="200" height="110" xmlns="http://www.w3.org/2000/svg" aria-label="Navio navegando">
+          <!-- casco -->
+          <path d="M20 80 L170 80 L205 70 L195 95 L35 95 Z" fill="#2a3b5f" stroke="#1b2a49" stroke-width="2"/>
+          <!-- linha d'água -->
+          <rect x="25" y="90" width="165" height="4" fill="#e94e4e" opacity="0.9"/>
+          <!-- superestrutura -->
+          <rect x="110" y="48" width="54" height="26" rx="3" fill="#e9f0ff" stroke="#b7c9ff" stroke-width="2"/>
+          <!-- ponte (andar superior) -->
+          <rect x="120" y="38" width="34" height="14" rx="2" fill="#f5f8ff" stroke="#b7c9ff" stroke-width="2"/>
+          <!-- janelas da superestrutura -->
+          <g fill="#6ea8ff">
+            <rect x="116" y="54" width="8" height="6" rx="1"/>
+            <rect x="128" y="54" width="8" height="6" rx="1"/>
+            <rect x="140" y="54" width="8" height="6" rx="1"/>
+            <rect x="152" y="54" width="8" height="6" rx="1"/>
+          </g>
+          <!-- chaminé -->
+          <rect x="150" y="30" width="12" height="16" fill="#3e2a1f"/>
+          <rect x="150" y="26" width="12" height="6" fill="#d13d3d"/>
+          <!-- contêineres estilizados -->
+          <g>
+            <rect x="60" y="64" width="18" height="12" fill="#6fc2ff"/>
+            <rect x="79" y="64" width="18" height="12" fill="#ffd166"/>
+            <rect x="98" y="64" width="18" height="12" fill="#ef476f"/>
+          </g>
+          <!-- proa sombreada -->
+          <path d="M170 80 L205 70 L195 95 Z" fill="#243859" opacity="0.6"/>
+          <!-- sombra do casco -->
+          <path d="M35 95 Q105 100 195 95 L205 70 L170 80 L20 80 Z" fill="rgba(0,0,0,0.08)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+  </section>
+
+  <main class="layout">
+    <section class="panel game" aria-labelledby="missionTitle">
+      <div id="startScreen" class="card visible" role="region" aria-labelledby="startTitle">
+        <h2 id="startTitle">Antes de zarpar...</h2>
+        <label for="playerName" class="name-label">Seu nome</label>
+        <input id="playerName" class="input" type="text" maxlength="40" placeholder="Digite seu nome" />
+        <section class="rules" aria-labelledby="rulesTitle">
+          <h3 id="rulesTitle">Regras do Jogo</h3>
+          <ul>
+            <li>Monte a frase correta selecionando as opções para preencher as lacunas.</li>
+            <li>Cada lacuna correta vale <strong>50 pontos</strong>.</li>
+            <li>Para avançar, todas as lacunas da tela precisam estar corretas.</li>
+            <li>Você pode <em>Embaralhar</em> e <em>Reiniciar</em> a tela antes de concluí-la.</li>
+            <li>Após concluir, a pontuação é registrada e não pode ser refeita.</li>
+          </ul>
+        </section>
+        <button id="btnStart" class="btn primary">Começar</button>
+      </div>
+
+      <div id="missionScreen" class="card" role="region" aria-labelledby="missionTitle">
+        <h2 id="missionTitle">Missão</h2>
+        <div id="sentence" class="sentence" aria-live="polite"></div>
+        <div class="options-row">
+          <div class="controls">
+            <button id="btnShuffle" class="btn">Embaralhar</button>
+            <button id="btnReset" class="btn">Reiniciar Tela</button>
+          </div>
+          <div class="actions">
+            <button id="btnVerify" class="btn success">Verificar</button>
+            <button id="btnNext" class="btn next" disabled>Próxima</button>
+          </div>
+        </div>
+        <div id="options" class="options" aria-label="Opções de palavras"></div>
+      </div>
+
+      <div id="reportScreen" class="card" role="region" aria-labelledby="reportTitle">
+        <h2 id="reportTitle">Relatório de Bordo</h2>
+        <p class="report-intro">Muito bem, Marujo! Eis o seu desempenho:</p>
+        <div class="report">
+          <div class="metric">
+            <div class="metric-value" id="reportPoints">0</div>
+            <div class="metric-label">Pontos</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="reportAccuracy">0%</div>
+            <div class="metric-label">Precisão</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value" id="reportTime">0s</div>
+            <div class="metric-label">Tempo</div>
+          </div>
+        </div>
+        <button id="btnReplay" class="btn">Jogar novamente</button>
+      </div>
+    </section>
+
+    <aside class="panel mascot" aria-labelledby="mascotTitle">
+      <h2 id="mascotTitle">Mascote Gato Marinheiro</h2>
+      <p id="mascotMsg">Bem-vindo! Monte a frase arrastando/clicando nas opções abaixo.</p>
+      <figure class="mascot-figure">
+        <img id="mascotImage" src="assets/gato-marinheiro.jpg" alt="Mascote Gato Marinheiro em pixel art" loading="lazy" decoding="async" />
+        <figcaption class="sr-only">Mascote Gato Marinheiro em pixel art</figcaption>
+      </figure>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <small>Gato Marinheiro — v8.9.5 (fallback inline). © 2025</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

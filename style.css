@@ -1,0 +1,85 @@
+
+:root{
+  --bg:#0b1220; --panel:#121a2a; --card:#0f1626; --ink:#e4f1ff; --muted:#9fb3c8; --brand:#59a6ff; --accent:#f7d36a; --good:#5bd17a; --bad:#ff6b6b; --btn:#1e2a44;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{ margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif; color:var(--ink);
+  background: radial-gradient(1200px 600px at 20% -10%, #12203a, transparent), radial-gradient(1300px 700px at 80% 110%, #081327, transparent), var(--bg); }
+
+/* Topbar */
+.topbar{display:flex; align-items:center; justify-content:space-between; padding:12px 16px; gap:12px; border-bottom:1px solid #1f2a44; background:linear-gradient(180deg, #0a1324, #081327); position:sticky; top:0; z-index:20}
+.brand{display:flex; align-items:center; gap:10px}
+.logo{font-size:22px}
+.title{font-size:18px; margin:0}
+.title small{color:var(--muted); font-weight:400}
+.status{display:flex; align-items:center; gap:16px; color:var(--muted)}
+.score{color:var(--accent); font-weight:700}
+.timer{padding:2px 8px; border:1px solid #243153; border-radius:14px}
+
+/* ===== Faixa do mar com NAVIO ===== */
+.sea-banner{ position:relative; height:140px; overflow:hidden; border-bottom:1px solid #1f2a44;
+  background: linear-gradient(180deg, #7ec8ff 0%, #bfe7ff 55%, #4da3ff 55%, #2e6bd9 100%); }
+.boat-track{ position:absolute; left:-15%; top:8px; width:130%; height:100%; animation: sail-x 28s linear infinite; will-change: transform }
+.boat{ position:absolute; left:5%; top:6px; width:200px; filter: drop-shadow(0 3px 0 rgba(0,0,0,.25)); animation: sail-bob 2.6s ease-in-out infinite; transform-origin:center }
+.wave{ position:absolute; left:0; right:0; bottom:0; height:70px; opacity:.55 }
+.wave1{ background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='70' viewBox='0 0 200 70'><path d='M0 40 Q25 10 50 40 T100 40 T150 40 T200 40 V70 H0Z' fill='rgba(255,255,255,0.22)'/></svg>") repeat-x bottom; background-size:200px 70px; animation: drift 18s linear infinite }
+.wave2{ background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='70' viewBox='0 0 200 70'><path d='M0 45 Q25 20 50 45 T100 45 T150 45 T200 45 V70 H0Z' fill='rgba(255,255,255,0.12)'/></svg>") repeat-x bottom; background-size:200px 70px; animation: drift 28s linear infinite reverse; height:64px }
+@keyframes drift { from { background-position-x: 0 } to { background-position-x: -200px } }
+@keyframes sail-x { from { transform: translateX(0) } to { transform: translateX(100%) } }
+@keyframes sail-bob { 0%,100% { transform: translateY(0) rotate(-1deg) } 50% { transform: translateY(4px) rotate(1deg) } }
+
+/* Layout principal */
+.layout{display:grid; grid-template-columns: 1fr 320px; gap:16px; padding:16px}
+.panel{background:var(--panel); border:1px solid #1e2948; border-radius:12px; padding:16px}
+
+/* Cartões */
+.card{display:none; gap:12px; background:var(--card); border:1px solid #1f2b4a; border-radius:12px; padding:16px}
+.card.visible{display:flex; flex-direction:column}
+
+.input{width:100%; padding:10px 12px; border-radius:8px; border:1px solid #2a3b66; background:#0a1326; color:var(--ink)}
+.rules ul{margin-top:6px}
+
+/* Missão */
+.sentence{min-height:72px; padding:12px; border-radius:12px; background:#0b1730; border:1px dashed #2a3b66; line-height:1.8}
+.blank{display:inline-block; min-width:84px; padding:4px 8px; margin:0 6px; border-radius:8px; border:1px dashed #3b4f7e; color:var(--muted); text-align:center; background:#0a1631}
+.blank.filled{color:var(--ink); border-style:solid; border-color:#4568b2; background:#112048}
+.blank.correct{background: rgba(91,209,122,0.15); border-color: var(--good); color:var(--ink)}
+.blank.incorrect{background: rgba(255,107,107,0.15); border-color: var(--bad)}
+.blank.drag-over{outline:2px dashed var(--accent); background: rgba(247,211,106,0.12)}
+
+.options{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.token{padding:8px 12px; border-radius:10px; border:1px solid #264071; background:var(--btn); color:var(--ink); cursor:grab; user-select:none}
+.token:active{cursor:grabbing}
+.token.used{opacity:0.35; pointer-events:none}
+
+.options-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:8px 0}
+.controls,.actions{display:flex; gap:8px}
+
+.btn{padding:10px 14px; border-radius:10px; border:1px solid #2a3b66; background:#0e1b36; color:var(--ink); cursor:pointer}
+.btn:hover{filter:brightness(1.05)}
+.btn.primary{background:linear-gradient(180deg, #17315d, #0f2243); border-color:#28467e}
+.btn.success{background:linear-gradient(180deg, #175d2e, #0f4320); border-color:#2f7e49}
+.btn.next{background:linear-gradient(180deg, #5b4260, #36243b); border-color:#7e2f69}
+.btn:disabled{opacity:0.5; cursor:not-allowed}
+
+/* Mascote */
+.mascot{display:flex; flex-direction:column; gap:12px}
+.mascot-figure{margin:0; display:flex; align-items:center; justify-content:center}
+#mascotImage{display:block; width:100%; max-width:280px; height:auto; border-radius:12px; border:1px solid #2a3b66; box-shadow: inset 0 0 0 3px #0d1a33; object-fit: contain; background: #0a1326; margin: 4px auto}
+
+/* Relatório */
+.report{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:8px}
+.metric{background:#0c1730; border:1px solid #23335a; border-radius:12px; padding:16px; text-align:center}
+.metric-value{font-size:28px; font-weight:800; color:var(--accent)}
+.metric-label{color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:0.08em}
+
+.footer{padding:12px 16px; color:var(--muted); text-align:center; border-top:1px solid #1f2a44}
+
+.sr-only{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+
+/* Menos movimento para quem preferir */
+@media (prefers-reduced-motion: reduce){ .boat-track, .boat, .wave1, .wave2{ animation: none !important } }
+
+/* Responsivo */
+@media (max-width: 980px){ .layout{grid-template-columns: 1fr} .mascot{order:-1} #mascotImage{ max-width:220px } }
