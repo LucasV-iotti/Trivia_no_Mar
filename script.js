@@ -13,8 +13,8 @@
     {
       title: 'Tela 1',
       sentenceTemplate: 'Para que possamos prosseguir com o agendamento e envio do boleto, vamos formalizar o acordo referente ao seu consórcio ____, foi ____ de R$ 1.500, correspondente ____ de número(s) 150, 151, com vencimento em 17/09/2025. Você ____ para que possamos prosseguir com o agendamento e envio do boleto/ programação do débito?',
-      correct: ['de grupo 153 e cota 0045','formalizado no valor','à(s) parcela','confirma esta negociação'],
-      options: ['de grupo 153 e cota 0045','formalizado no valor','à(s) parcela','confirma esta negociação','Grupo 153','Não confirma esta negociação','de contrato']
+      correct: ['de grupo 153 e cota 0045','formalizado no valor','à(s) parcelas','confirma esta negociação'],
+      options: ['de grupo 153 e cota 0045','formalizado no valor','à(s) parcelas','confirma esta negociação','Grupo 153','Não confirma esta negociação','de contrato']
     },
     {
       title: 'Tela 2',
